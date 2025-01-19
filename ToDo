@@ -1,0 +1,5 @@
+TODO
+
+- Grab .mp4 video length, compare to ffmpeg burn output to generate rough loading percentage
+- Delete temporary "video.mp4" file created as intermediary after burn
+- NEEDS UI ASAP PLEASE
