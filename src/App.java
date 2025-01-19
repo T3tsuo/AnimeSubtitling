@@ -5,7 +5,7 @@ public class App {
         System.out.println(System.getProperty("user.dir"));
 
         String[] encode
-                = {"opt/homebrew/bin/ffmpeg", "-i", "\"Solo.Leveling.S02E14.mkv\"",
+                = {"ffmpeg", "-i", "Solo.Leveling.S02E14.mkv",
                 "-codec", "copy", "-strict", "-2", "video.mp4"};
         ProcessBuilder processBuilder = new ProcessBuilder(encode);
 
@@ -14,5 +14,22 @@ public class App {
                 "\"ass=Solo.Leveling.S02E14.ass\"", "-c:v", "libx264", "-crf", "13", "out.mp4"};
 
         Process process = processBuilder.start();
+
+        // Get the input stream of the process
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        // Read the output of the command
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        // Get the error stream of the process
+        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+        // Read the error output of the command
+        while ((line = errorReader.readLine()) != null) {
+            System.err.println(line);
+        }
     }
 }
