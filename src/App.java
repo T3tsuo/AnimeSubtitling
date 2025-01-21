@@ -11,6 +11,12 @@ public class App {
         processBuilder.command(TerminalCommands.ENCODE);
         process.runCommand(processBuilder, false);
 
+        //TODO Wait for .mp4 to be  created before proceeding
+        /*
+        .mp4 isn't being created fast enough before trying to grab file duration or burning .ass
+        need to make program wait here until first command is finished
+         */
+
         //Grabs video duration
         processBuilder.command(TerminalCommands.GRAB_DURATION);
         process.runCommand(processBuilder, true);
