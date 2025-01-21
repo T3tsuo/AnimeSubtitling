@@ -2,11 +2,28 @@ import java.io.*;
 
 public class ProcessStart {
 
+    /**
+     * Basic Constructor
+     */
     public ProcessStart (){}
 
-    public void runCommand(ProcessBuilder pBuilder) throws IOException{
+    /**
+     * Runs the passed ProcessBuilder command, and prints output to terminal if needed
+     * @param pBuilder ProcessBuilder with encoded command
+     * @param outputTerminal flag for if we need the terminal output or no
+     * @throws IOException
+     */
+    public void runCommand(ProcessBuilder pBuilder, boolean outputTerminal) throws IOException{
         Process process = pBuilder.start();
+        if (outputTerminal) OutputTerminal(process);
+    }
 
+    /**
+     * Outputs passed Process to the terminal
+     * @param process Process to output
+     * @throws IOException
+     */
+    public void OutputTerminal(Process process) throws IOException{
         // Get the input stream of the process
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
@@ -24,5 +41,4 @@ public class ProcessStart {
             System.err.println(line);
         }
     }
-
 }
