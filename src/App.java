@@ -1,21 +1,17 @@
 import java.io.*;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         //Initializes ProcessBuilder and adds first command and calls it
         ProcessBuilder processBuilder = new ProcessBuilder();
         ProcessStart process = new ProcessStart();
 
+        processBuilder.redirectErrorStream(true);
+
         //Encodes .mkv into .mp4
         processBuilder.command(TerminalCommands.ENCODE);
-        process.runCommand(processBuilder, false);
-
-        //TODO Wait for .mp4 to be  created before proceeding
-        /*
-        .mp4 isn't being created fast enough before trying to grab file duration or burning .ass
-        need to make program wait here until first command is finished
-         */
+        process.runCommand(processBuilder, true);
 
         //Grabs video duration
         processBuilder.command(TerminalCommands.GRAB_DURATION);
