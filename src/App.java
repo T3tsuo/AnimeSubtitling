@@ -11,7 +11,7 @@ public class App {
 
         //Encodes .mkv into .mp4
         processBuilder.command(TerminalCommands.ENCODE);
-        process.runCommand(processBuilder, true);
+        process.runCommand(processBuilder, false);
 
         //Grabs video duration
         processBuilder.command(TerminalCommands.GRAB_DURATION);
