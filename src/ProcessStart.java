@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class ProcessStart {
     private boolean grabDuration;
     public double duration;
-    public double currentPct;
+    public double currentPct = 0;
     /**
      * Basic Constructor
      */
@@ -43,8 +43,12 @@ public class ProcessStart {
             if(grabDuration){
                 duration = Double.parseDouble(line);
             } else if (line.contains("frame=")) {
-                this.currentPct = pctCalculator(matchBurn(line));
-                System.out.printf("%.2f%%\n", currentPct);
+                double temp = pctCalculator(matchBurn(line));
+                if (currentPct < temp) {
+                    currentPct = temp;
+                    System.out.printf("%.2f%%\n", currentPct);
+                }
+                
             }
         }
     }

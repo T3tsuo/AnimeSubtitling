@@ -20,5 +20,9 @@ public class App {
         //Burns .ass onto .mp4
         processBuilder.command(TerminalCommands.BURN);
         process.runCommand(processBuilder, true, "Burn ASS", false);
+        
+        // Delete temp file
+        File file = new File("video.mp4");
+        file.delete();
     }
 }
