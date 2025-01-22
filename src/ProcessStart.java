@@ -11,11 +11,15 @@ public class ProcessStart {
      * Runs the passed ProcessBuilder command, and prints output to terminal if needed
      * @param pBuilder ProcessBuilder with encoded command
      * @param outputTerminal flag for if we need the terminal output or no
+     * @param cmdTag Tag for what command is being run, output with exit code
      * @throws IOException
      */
-    public void runCommand(ProcessBuilder pBuilder, boolean outputTerminal) throws IOException, InterruptedException {
+    public void runCommand(ProcessBuilder pBuilder, boolean outputTerminal, String cmdTag) throws IOException, InterruptedException {
         Process process = pBuilder.start();
         if (outputTerminal) OutputTerminal(process);
+
+        int exitCode = process.waitFor();
+        System.out.println(cmdTag + ": Process exited with code - " + exitCode);
     }
 
     /**
@@ -33,15 +37,5 @@ public class ProcessStart {
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
         }
-
-       /* // Get the error stream of the process
-        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-        // Read the error output of the command
-        while ((line = errorReader.readLine()) != null) {
-            System.err.println(line);
-        }*/
-        int exitCode = process.waitFor();
-        System.out.println("Process exited with code: " + exitCode);
     }
 }
