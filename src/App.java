@@ -11,14 +11,14 @@ public class App {
 
         //Encodes .mkv into .mp4
         processBuilder.command(TerminalCommands.ENCODE);
-        process.runCommand(processBuilder, false, "Encode to MP4");
+        process.runCommand(processBuilder, false, "Encode to MP4", false);
 
         //Grabs video duration
         processBuilder.command(TerminalCommands.GRAB_DURATION);
-        process.runCommand(processBuilder, true, "Grab Video Duration");
+        process.runCommand(processBuilder, true, "Grab Video Duration", true);
 
         //Burns .ass onto .mp4
         processBuilder.command(TerminalCommands.BURN);
-        process.runCommand(processBuilder, true, "Burn ASS");
+        process.runCommand(processBuilder, true, "Burn ASS", false);
     }
 }

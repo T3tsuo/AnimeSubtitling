@@ -3,7 +3,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProcessStart {
-
+    private boolean grabDuration;
+    public double duration;
+    public double currentPct;
     /**
      * Basic Constructor
      */
@@ -16,7 +18,8 @@ public class ProcessStart {
      * @param cmdTag Tag for what command is being run, output with exit code
      * @throws IOException
      */
-    public void runCommand(ProcessBuilder pBuilder, boolean outputTerminal, String cmdTag) throws IOException, InterruptedException {
+    public void runCommand(ProcessBuilder pBuilder, boolean outputTerminal, String cmdTag, boolean grabDuration) throws IOException, InterruptedException {
+        this.grabDuration = grabDuration;
         Process process = pBuilder.start();
         if (outputTerminal) OutputTerminal(process);
 
@@ -37,13 +40,20 @@ public class ProcessStart {
         // Read the output of the command
         String line;
         while ((line = reader.readLine()) != null) {
-            if (line.contains("frame=")) {
-                System.out.println(matchBurn(line));
+            if(grabDuration){
+                duration = Double.parseDouble(line);
+            } else if (line.contains("frame=")) {
+                this.currentPct = pctCalculator(matchBurn(line));
+                System.out.printf("%.2f%%\n", currentPct);
             }
         }
     }
 
-
+    /**
+     * Uses regex to filter for duration in processing
+     * @param inputString command line string we want to parse
+     * @return parsed string in format xx:xx:xx.xx
+     */
     public double matchBurn(String inputString) {
         String regex = "\\d{2}:\\d{2}:\\d{2}.\\d{2}"; // Matches one or more digits
         Pattern pattern = Pattern.compile(regex);
@@ -57,13 +67,27 @@ public class ProcessStart {
         }
     }
 
+    /**
+     * Converts parsed time value from xx:xx:xx.xx into decimal seconds
+     * @param durationString String to be parsed
+     * @return Resulting time conversion
+     */
     public double convertToSeconds(String durationString) {
         String[] timeArray = durationString.split(":");
 
         int hours = Integer.parseInt(timeArray[0]);
         int minutes = Integer.parseInt(timeArray[1]);
-        Double seconds = Double.parseDouble(timeArray[2]);
+        double seconds = Double.parseDouble(timeArray[2]);
 
         return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    /**
+     * Caluclates loading percentage
+     * @param currentTime current time progressed in seconds
+     * @return Percentage
+     */
+    public double pctCalculator(double currentTime){
+        return (currentTime/duration) * 100;
     }
 }
