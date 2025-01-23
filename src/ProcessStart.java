@@ -6,6 +6,7 @@ public class ProcessStart {
     private boolean grabDuration;
     public double duration;
     public double currentPct = 0;
+    public int counterCap = 7;
     /**
      * Basic Constructor
      */
@@ -39,17 +40,19 @@ public class ProcessStart {
 
         // Read the output of the command
         String line;
+        int counter = 0;
         while ((line = reader.readLine()) != null) {
             if(grabDuration){
                 duration = Double.parseDouble(line);
-            } else if (line.contains("frame=")) {
+            } else if (line.contains("frame=") && counter >= counterCap) {
+                counter = 0;
                 double temp = pctCalculator(matchBurn(line));
                 if (currentPct < temp) {
                     currentPct = temp;
                     System.out.printf("%.2f%%\n", currentPct);
                 }
-                
             }
+            counter++;
         }
     }
 
@@ -93,5 +96,8 @@ public class ProcessStart {
      */
     public double pctCalculator(double currentTime){
         return (currentTime/duration) * 100;
+    }
+    public void setCounterCap(int counterCap){
+        this.counterCap = counterCap;
     }
 }
